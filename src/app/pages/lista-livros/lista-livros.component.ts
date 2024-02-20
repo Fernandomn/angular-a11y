@@ -1,14 +1,23 @@
-import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EMPTY, catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap, throwError } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  EMPTY,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 
-import { LivrosResultado, Item } from '../../models/interfaces';
+import { LivroComponent } from '../../componentes/livro/livro.component';
+import { Item, LivrosResultado } from '../../models/interfaces';
 import { LivroVolumeInfo } from '../../models/livroVolumeInfo';
 import { LivroService } from '../../service/livro.service';
-import { LivroComponent } from '../../componentes/livro/livro.component';
-
 
 const PAUSA = 300;
 
@@ -19,17 +28,23 @@ const PAUSA = 300;
     HttpClientModule,
     CommonModule,
     LivroComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './lista-livros.component.html',
-  styleUrl: './lista-livros.component.css'
+  styleUrl: './lista-livros.component.css',
 })
-export class ListaLivrosComponent {
+export class ListaLivrosComponent implements AfterViewInit {
+  @ViewChild('searchFieldElement') searchFieldElement!: ElementRef;
+
   campoBusca = new FormControl();
-  mensagemErro = ''
+  mensagemErro = '';
   livrosResultado!: LivrosResultado;
 
-  constructor(private service: LivroService) { }
+  constructor(private service: LivroService) {}
+
+  ngAfterViewInit(): void {
+    this.searchFieldElement.nativeElement.focus();
+  }
 
   livrosEncontrados$ = this.campoBusca.valueChanges.pipe(
     debounceTime(PAUSA),
@@ -54,8 +69,8 @@ export class ListaLivrosComponent {
   );
 
   livrosResultadoParaLivros(items: Item[]): LivroVolumeInfo[] {
-    return items.map(item => {
-      return new LivroVolumeInfo(item)
-    })
+    return items.map((item) => {
+      return new LivroVolumeInfo(item);
+    });
   }
 }
