@@ -14,7 +14,11 @@
   </form>
   <p>Busque por assunto, autoria, nome...</p>
   @if (mensagemErro) {
-  <section class="resultados mensagem-erro" aria-label="Mensagem de erro">
+  <section
+    role="alert"
+    class="resultados mensagem-erro"
+    aria-label="Mensagem de erro"
+  >
     {{ mensagemErro }}
   </section>
   } @if (livrosEncontrados$ | async; as listaLivros) {
