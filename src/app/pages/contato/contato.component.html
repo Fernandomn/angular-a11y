@@ -14,6 +14,7 @@
       <div class="campo-form">
         <label for="nome">Nome</label>
         <input
+          aria-describedby="nome-erro"
           [attr.aria-invalid]="contatoForm.get('nome')?.invalid"
           type="text"
           id="nome"
@@ -30,6 +31,8 @@
         <label for="email">E-mail</label>
         <input
           [attr.aria-invalid]="contatoForm.get('email')?.invalid"
+          aria-label="Endereço de e-mail"
+          aria-describedby="email-erro-email email-erro-required"
           type="email"
           id="email"
           placeholder="Digite seu email"
@@ -118,6 +121,7 @@
         <label for="mensagem">Mensagem</label>
         <textarea
           [attr.aria-invalid]="contatoForm.get('mensagem')?.invalid"
+          aria-describedby="mensagem-erro"
           id="mensagem"
           placeholder="Digite sua mensagem"
           formControlName="mensagem"
@@ -137,7 +141,7 @@
       </button>
       <button
         type="submit"
-        [disabled]="contatoForm.invalid"
+        [attr.aria-disabled]="contatoForm.invalid"
         class="botao-enviar"
       >
         Enviar
