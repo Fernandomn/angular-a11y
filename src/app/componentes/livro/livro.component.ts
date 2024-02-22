@@ -1,25 +1,29 @@
-import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 import { Livro } from '../../models/interfaces';
-import { AutoriaPipe } from '../../pipes/autoria.pipe';
 import { ModalComponent } from '../../pages/modal/modal.component';
+import { AutoriaPipe } from '../../pipes/autoria.pipe';
 
 @Component({
   selector: 'app-livro',
   standalone: true,
   imports: [CommonModule, AutoriaPipe, ModalComponent],
   templateUrl: './livro.component.html',
-  styleUrl: './livro.component.css'
+  styleUrl: './livro.component.css',
 })
 export class LivroComponent {
-
   @Input() livro!: Livro;
   modalAberto: boolean = false;
 
-  constructor() {}
+  constructor(private renderer: Renderer2, private element: ElementRef) {}
 
   onModalChange(evento: boolean) {
     this.modalAberto = evento;
+    this.renderer.setStyle(
+      this.element.nativeElement.ownerDocument.body,
+      'overflow',
+      'hidden'
+    );
   }
 }
